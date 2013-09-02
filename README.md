@@ -35,3 +35,8 @@ Setup Xtend for Eclipse
 Xtend is described as a modernized Java. It gets rid of a lot of the boilerplate code without adding a big runtime dependency (like Scala for example).
 
 Install it by following the instructions on this page http://www.eclipse.org/xtend/download.html. The .xtend files live in src/, and generated .java lives in gen/. To follow stack traces you will need to look at the generated files. Also breakpoints only seem to work when set on the .java (as of writing).
+
+Exporting the APK
+-----------------
+
+Things should work fine if you use Eclipse's "Run As Android Application" menu. If you need to use Eclipse's 'Export' option (to make a release for example) you need to make sure that the project's "Java Build Path" contains the Xtend Library, but does not contain the "Android Private Libraries". You've forgotten to do this if you get an error like 'Multiple dex files define Lcom/google/common/annotations/Beta;'.
