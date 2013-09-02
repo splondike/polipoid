@@ -1,0 +1,3 @@
+[submodule "polipo"]
+	path = polipo
+	url = https://github.com/jech/polipo.git

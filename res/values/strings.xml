@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Polipoid</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_help">Help</string>
+    <string name="lbl_start_header">Start/stop proxy</string>
+    <string name="start_proxy">Start proxy</string>
+    <string name="stop_proxy">Stop proxy</string>
+    <string name="proxy_explanation">Start or stop the proxy (running on port 8123)</string>
+    <string name="lbl_wrapper_settings">Basic configuration</string>
+    <string name="chk_autostart">Start on boot</string>
+    <string name="notification_title">Polipoid running</string>
+    <string name="notification_message">Touch to configure proxy</string>
+    <string name="title_activity_help">Help</string>
+    <string name="help_text">Polipoid is a wrapper around the \'polipo\' proxy. In addition to providing a tray icon it automatically puts polipo into offline mode when the network is disconnected.\n\nFor more about polipo see:\n http://www.pps.univ-paris-diderot.fr/~jch/software/polipo \n\nThe method for using a proxy depends greatly on your version of android. Googling \'android 2.2 proxy\' or the like should help.</string>
+
+</resources>

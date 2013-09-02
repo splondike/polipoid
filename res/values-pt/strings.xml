@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Polipoid</string>
+    <string name="action_settings">Configuração</string>
+    <string name="action_help">Ajuda</string>
+    <string name="lbl_start_header">Iniciar ou parar o proxy</string>
+    <string name="start_proxy">Iniciar proxy</string>
+    <string name="stop_proxy">Parar proxy</string>
+    <string name="proxy_explanation">Iniciar ou parar o proxy (que utiliza o puerto 8123)</string>
+    <string name="lbl_wrapper_settings">Configuração básica</string>
+    <string name="chk_autostart">Iniciar com Android</string>
+    <string name="notification_title">Polipoid funcionando</string>
+    <string name="notification_message">Tocar para configurar o proxy</string>
+    <string name="title_activity_help">Ajuda</string>
+    <string name="help_text">Polipoid é um invólucro para o proxy \'polipo\'. Proviene um icono de notificação e também mudar-se ao \'offline mode\' quando a rede é desconectado.\n\nPara ler mais informações sobre polipo:\n http://www.pps.univ-paris-diderot.fr/~jch/software/polipo \n\nO método de configuração de a sistema para usar o proxy depiende en o versão de Android. Buscar una solução em Google.</string>
+
+</resources>
