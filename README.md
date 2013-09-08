@@ -3,10 +3,10 @@ Polipoid brings the Polipo HTTP proxy to Android. Polipo lets you do useful thin
 Building
 ========
 
-Polipoid acts as a thin wrapper around the 'Polipo' HTTP proxy. Also, the code is written in the Xtend programming language. Consequently, to build it you will need in addition to the SDK:
+Polipoid acts as a thin wrapper around the 'Polipo' HTTP proxy. The code is written in the Xtend programming language and is built using Maven. Consequently, to build it you will need in addition to the SDK:
 
-  - The Android NDK (or a polipo binary which will run on the Android system you're targeting)
-  - Some way of compiling Xtend to java, I used the Xtend eclipse plugin
+  - The Android NDK (or a polipo binary which will run on the Android system you're targeting).
+  - Maven installed and set up to use the Android Support Repository (see below).
 
 Build Polipo binary
 -------------------
@@ -29,9 +29,53 @@ If you get an error like "sysinfo not defined" when running make, you may have t
 
 3. Now copy the polipo binary to the assets folder using `cp polipo ../assets/`
 
-Setup Xtend for Eclipse
------------------------
+Setup Maven
+-----------
+In addition to installing Maven you will need to make sure the "Android Support Repository" is installed. You can do this by opening the "Android SDK Manager", expanding "Extras" and downloading "Android Support Repository".
+
+Once that is done we'll set up Maven to add the repo to its default search path. Create ~/.m2/settings.xml and put in the following content (or merge it into your existing one):
+
+    <settings>
+        <activeProfiles>
+            <activeProfile>
+                android
+            </activeProfile>
+        </activeProfiles>
+        <profiles>
+            <profile>
+                <id>android</id>
+                <repositories>
+                    <repository>
+                        <id>android-support-repository</id>
+                        <url>file:///opt/android/sdk/extras/android/m2repository/</url>
+                    </repository>
+                </repositories>
+            </profile>
+        </profiles>
+    </settings>
+
+This assumes that your Android SDK lives at /opt/android/sdk. Change as appropriate.
+
+Build APK
+---------
+Once you've done all the above, all you should have to do to build the APK is run `mvn package` to build `target/polipoid.apk`.
+
+To deploy this APK to your android device or emulator you can run `mvn android:deploy`. During development I tend to just use Eclipse for this though.
+
+
+Developing
+==========
+
+I use Eclipse to develop the application, and you can too, once you've got Building working. After you've done the following steps you can import the code and act like it's a normal Android project.
+
+Setup Xtend plugin for Eclipse
+------------------------------
 
 Xtend is described as a modernized Java. It gets rid of a lot of the boilerplate code without adding a big runtime dependency (like Scala for example).
 
 Install it by following the instructions on this page http://www.eclipse.org/xtend/download.html. The .xtend files live in src/, and generated .java lives in gen/. To follow stack traces you will need to look at the generated files. Also breakpoints only seem to work when set on the .java (as of writing).
+
+Setup m2e-android plugin for Eclipse
+------------------------------
+
+This plugin is needed so that Eclipse knows about the maven included dependencies. You need the Eclipse marketplace plugin to install it. Then just search for android m2e and install. See http://rgladwell.github.io/m2e-android/
