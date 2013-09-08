@@ -19,6 +19,7 @@ class ProxyWrapperService extends Service {
 	val private notificationId = 1
 	var private ProxyManager proxyManager = new ProxyManager(this)
 	val private connectivityReceiver = new ConnectivityReceiver(this.proxyManager)
+	
 
 	def boolean isRunning() {
 		this.proxyManager.isRunning
@@ -31,6 +32,7 @@ class ProxyWrapperService extends Service {
 		this.registerReceiver(this.connectivityReceiver, 
 			new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
 		)
+
 	}
 
 	def void stopProxy() {
@@ -60,7 +62,7 @@ class ProxyWrapperService extends Service {
 			.setOngoing(true)
 			.setPriority(-1)
 			.setWhen(0) // Hide the notification timestamp
-			.build();
+			.build()
 	}
 
 	// Callbacks for the Android API

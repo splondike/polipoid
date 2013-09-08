@@ -32,6 +32,10 @@ class ProxyManager {
 	var boolean polipoStartedOffline = false
 	var Process polipoProcess = null
 	var Integer polipoPid = null
+	/** 
+	 * A Thread that restarts the polipo process if it crashes.
+	 */
+	var private Thread polipoMonitor = null
 
 	new(Context context) {
 		this.context = context
@@ -40,7 +44,7 @@ class ProxyManager {
 	 * Starts the polipo process
 	 */
 	def void start() {
-		if (this.polipoProcess != null) return;
+		if (this.running) return;
 
 		checkInstallation()
 		val userConf = new File(this.polipoDir, "user.conf")
@@ -51,7 +55,18 @@ class ProxyManager {
 		// First line is the PID of the polipo process
 	    val pidStr = new BufferedReader(new InputStreamReader(this.polipoProcess.inputStream)).readLine
 	    this.polipoPid = Integer.parseInt(pidStr)
-		// TODO: Check for port collision
+		// TODO: Check for port collision, async task instead of Thread for dialog box?
+		this.polipoMonitor = new Thread[|
+			try {
+				this.waitForProcess()
+				// TODO: Fail if we try to restart too often in a given time?
+				this.start()
+			}
+			catch (InterruptedException e) {
+				// Stop method called
+			}
+		]
+		this.polipoMonitor.start()
 	}
 
 	/**
@@ -89,16 +104,30 @@ class ProxyManager {
 	}
 
 	def void stop() {
-		if (this.polipoProcess == null) return;
+		if (!this.running) return;
+		this.polipoMonitor.interrupt()
+		this.polipoMonitor = null
 		// the killProcess call seems to not shut polipo down cleanly
 		android.os.Process.sendSignal(this.polipoPid, ProxyManager.SIGNAL_SHUTDOWN)
-		this.polipoProcess.waitFor
-		this.polipoProcess = null
-		this.polipoPid = null
+		this.waitForProcess()
 	}
 
 	def boolean isRunning() {
 		this.polipoProcess != null
+	}
+
+	/**
+	 * Block the current thread until the polipo process exits
+	 * 
+	 * TODO: This should probably be made thread-safe so polipoMonitor and stop can't conflict
+	 */
+	def private int waitForProcess() {
+		if (!this.running) return -1;
+
+		val returnCode = this.polipoProcess.waitFor
+		this.polipoProcess = null
+		this.polipoPid = null
+		returnCode
 	}
 
 	def updateProxyOfflineSetting() {
@@ -109,7 +138,7 @@ class ProxyManager {
 	}
 
 	def void reduceMemoryUsage() {
-		if (this.polipoProcess == null) return;
+		if (!this.running) return;
 		android.os.Process.sendSignal(this.polipoPid, ProxyManager.SIGNAL_DUMPMEM)
 	}
 
