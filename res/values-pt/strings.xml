@@ -14,5 +14,6 @@
     <string name="notification_message">Tocar para configurar o proxy</string>
     <string name="title_activity_help">Ajuda</string>
     <string name="help_text">Polipoid é um invólucro para o proxy \'polipo\'. Proviene um icono de notificação e também mudar-se ao \'offline mode\' quando a rede é desconectado.\n\nPara ler mais informações sobre polipo:\n http://www.pps.univ-paris-diderot.fr/~jch/software/polipo \n\nO método de configuração de a sistema para usar o proxy depiende en o versão de Android. Buscar una solução em Google.</string>
+    <string name="flattr_button_description">Apoiar Polipoid em Flattr</string>
 
 </resources>

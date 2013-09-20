@@ -21,8 +21,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:autoLink="web"
+                android:paddingBottom="10dp"
                 android:text="@string/help_text"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <ImageButton
+                android:id="@+id/flattr_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/flattr_badge_large"
+                android:onClick="flattrClicked"
+                android:contentDescription="@string/flattr_button_description" />
 
         </LinearLayout>
 
