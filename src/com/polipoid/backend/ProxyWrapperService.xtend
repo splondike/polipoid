@@ -16,9 +16,11 @@ import com.polipoid.ui.MainActivity
  */
 class ProxyWrapperService extends Service {
 	val private binder = new ProxyWrapperBinder(this)
-	val private notificationId = 1
+	val private serviceRunningNotificationId = 1
+
 	var private ProxyManager proxyManager = new ProxyManager(this)
 	val private connectivityReceiver = new ConnectivityReceiver(this.proxyManager)
+	val private polipoCrashReceiver = new PolipoCrashReceiver(this)
 	
 
 	def boolean isRunning() {
@@ -28,11 +30,13 @@ class ProxyWrapperService extends Service {
 	def void startProxy() {
 		if (this.running) return;
 		this.proxyManager.start()
-		this.startForeground(this.notificationId, buildNotification)
+		this.startForeground(this.serviceRunningNotificationId, buildNotification)
 		this.registerReceiver(this.connectivityReceiver, 
 			new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
 		)
-
+		this.registerReceiver(this.polipoCrashReceiver, 
+			new IntentFilter("com.polipoid.polipo_crash")
+		)
 	}
 
 	def void stopProxy() {
@@ -40,6 +44,7 @@ class ProxyWrapperService extends Service {
 		this.proxyManager.stop()
 		this.stopForeground(true)
 		this.unregisterReceiver(this.connectivityReceiver)
+		this.unregisterReceiver(this.polipoCrashReceiver)
 	}
 
 	def private buildNotification() {

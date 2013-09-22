@@ -16,5 +16,8 @@
     <string name="help_text">Polipoid is a wrapper around the \'polipo\' proxy. In addition to providing a tray icon it automatically puts polipo into offline mode when the network is disconnected.\n\nFor more about polipo see:\n http://www.pps.univ-paris-diderot.fr/~jch/software/polipo \n\nThe method for using a proxy depends greatly on your version of android. Googling \'android 2.2 proxy\' or the like should help.</string>
     <string name="flattr_url">https://flattr.com/submit/auto?user_id=splondike&amp;url=http://github.com/splondike/polipoid/&amp;title=Polipoid&amp;description=Android%20wrapper%20for%20the%20Polipo%20proxy&amp;language=en_GB&amp;tags=android,proxy&amp;category=software</string>
     <string name="flattr_button_description">Support Polipoid on Flattr</string>
+    <string name="bug_report_url">http://github.com/splondike/polipoid/issues</string>
+    <string name="polipo_crash_title">Polipoid unstable</string>
+    <string name="polipo_crash_desc">Please file a bug report</string>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.polipoid.backend
 
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import com.google.common.base.Preconditions
 import com.google.common.io.ByteStreams
@@ -12,7 +13,7 @@ import java.io.FileWriter
 import java.io.InputStreamReader
 
 /**
- * Responsible for providing a running instance of the polipo binary.
+ * Responsible for managing an instance of the polipo binary.
  */
 class ProxyManager {
 	/**
@@ -40,6 +41,7 @@ class ProxyManager {
 	new(Context context) {
 		this.context = context
 	}
+
 	/**
 	 * Starts the polipo process
 	 */
@@ -55,15 +57,19 @@ class ProxyManager {
 		// First line is the PID of the polipo process
 	    val pidStr = new BufferedReader(new InputStreamReader(this.polipoProcess.inputStream)).readLine
 	    this.polipoPid = Integer.parseInt(pidStr)
-		// TODO: Check for port collision, async task instead of Thread for dialog box?
 		this.polipoMonitor = new Thread[|
 			try {
 				this.waitForProcess()
-				// TODO: Fail if we try to restart too often in a given time?
+				// TODO: Check for port collision, send different intent
+
 				this.start()
+
+				// TODO: Security?
+				val crashIntent = new Intent("com.polipoid.polipo_crash")
+				this.context.sendBroadcast(crashIntent)
 			}
 			catch (InterruptedException e) {
-				// Stop method called
+				// ProxyManager.stop() called
 			}
 		]
 		this.polipoMonitor.start()
