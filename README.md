@@ -31,30 +31,9 @@ If you get an error like "sysinfo not defined" when running make, you may have t
 
 Setup Maven
 -----------
-In addition to installing Maven you will need to make sure the "Android Support Repository" is installed. You can do this by opening the "Android SDK Manager", expanding "Extras" and downloading "Android Support Repository".
+In addition to installing Maven you will need to make sure the "Android Support Repository" is installed. You can do this by opening the "Android SDK Manager", expanding "Extras" and downloading "Android Support Repository". Now, assuming you've got your ANDROID_HOME environment variable set, you should be all set up.
 
-Once that is done we'll set up Maven to add the repo to its default search path. Create ~/.m2/settings.xml and put in the following content (or merge it into your existing one):
-
-    <settings>
-        <activeProfiles>
-            <activeProfile>
-                android
-            </activeProfile>
-        </activeProfiles>
-        <profiles>
-            <profile>
-                <id>android</id>
-                <repositories>
-                    <repository>
-                        <id>android-support-repository</id>
-                        <url>file:///opt/android/sdk/extras/android/m2repository/</url>
-                    </repository>
-                </repositories>
-            </profile>
-        </profiles>
-    </settings>
-
-This assumes that your Android SDK lives at /opt/android/sdk. Change as appropriate.
+Another option is to run the https://github.com/mosabua/maven-android-sdk-deployer/ to install the artifacts to your ~/.m2/repository directory.
 
 Build APK
 ---------

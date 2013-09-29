@@ -15,6 +15,14 @@
     <platform.version>4.3</platform.version>
   </properties>
 
+  <repositories>
+    <!-- See README.md "Setup Maven" if this bit fails -->
+    <repository>
+      <id>android-support-repository</id>
+      <url>file:///${env.ANDROID_HOME}/extras/android/m2repository/</url>
+    </repository>
+  </repositories>
+
   <dependencies>
     <dependency>
       <groupId>com.google.android</groupId>
