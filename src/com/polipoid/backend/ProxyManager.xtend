@@ -82,6 +82,9 @@ class ProxyManager {
 	 */
 	def private Process startWithConf(File config) {
 		Preconditions.checkArgument(config.exists, "Configuration file doesn't exist or can't be read.")
+		val wrapperScript = new File(this.polipoDir, "polipo-wrapper.sh").absolutePath
+		val polipoBinary = new File(this.polipoDir, "polipo").absolutePath
+
 		val noSyslog = "logSyslog=false"
 		val disableConfiguration = "disableLocalInterface=true"
 		val disableWebServer = "localDocumentRoot="
@@ -90,11 +93,10 @@ class ProxyManager {
 		val logFile = new File(this.context.cacheDir, "polipo.log").absolutePath
 		val cachePath = new File(this.context.cacheDir, "polipo_cache").absolutePath
 
-		val args = #["sh", "polipo-wrapper.sh", "-c", config.absolutePath, disableWebServer,
+		val args = #[wrapperScript, polipoBinary, "-c", config.absolutePath, disableWebServer,
 					 disableConfiguration, noSyslog, proxyOffline, "diskCacheRoot="+cachePath,
 					 "logFile="+logFile]
 		new ProcessBuilder(args)
-			.directory(this.polipoDir) // So the wrapper script will know where the binary is
 			.start()
 	}
 

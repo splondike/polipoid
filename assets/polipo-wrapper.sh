@@ -11,10 +11,12 @@
 #       come with very many (no busybox by default remember!). Check on the emulator.
 
 script_pid=$$
+polipo_binary=$1
+shift #Pass the remaining args through to the binary
 polipo_args=$@
 polipo_pid=0
 run_polipo() {
-  ./polipo $polipo_args &
+  $polipo_binary $polipo_args &
   polipo_pid=$!
   echo $polipo_pid
   wait $polipo_pid
