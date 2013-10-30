@@ -9,7 +9,11 @@ import android.net.ConnectivityManager
 import android.os.Build
 import android.support.v4.app.NotificationCompat
 import com.polipoid.R
+import com.polipoid.backend.proxy.ProxyManager
 import com.polipoid.ui.MainActivity
+import java.io.InputStream
+import com.polipoid.backend.proxy.UserConfigState
+import com.polipoid.backend.proxy.StopReason
 
 /**
  * Wraps the Polipo binary and provides an interface for interacting with it (start/stop, change configuration).
@@ -18,33 +22,67 @@ class ProxyWrapperService extends Service {
 	val private binder = new ProxyWrapperBinder(this)
 	val private serviceRunningNotificationId = 1
 
-	var private ProxyManager proxyManager = new ProxyManager(this)
-	val private connectivityReceiver = new ConnectivityReceiver(this.proxyManager)
-	val private polipoCrashReceiver = new PolipoCrashReceiver(this)
-	
+	var private ProxyManager proxyManager = null
+	var private ConnectivityReceiver connectivityReceiver = null
+	var private PolipoCrashHandler polipoCrashReceiver = null
+
+	def override void onCreate() {
+		// These need to be instantiated here because ProxyManager makes use of Context in its constructor
+		this.proxyManager = new ProxyManager(this)
+		this.connectivityReceiver = new ConnectivityReceiver(this.proxyManager)
+		this.polipoCrashReceiver = new PolipoCrashHandler(this)
+		this.proxyManager.setStopListener[stopReason|
+			if (StopReason.CRASH == stopReason) {
+				this.startProxy()
+				this.polipoCrashReceiver.handleCrash()
+			}
+		]
+	}
 
 	def boolean isRunning() {
-		this.proxyManager.isRunning
+		this.proxyManager.proxyRunning
 	}
 
 	def void startProxy() {
 		if (this.running) return;
-		this.proxyManager.start()
+		this.proxyManager.startProxy()
 		this.startForeground(this.serviceRunningNotificationId, buildNotification)
 		this.registerReceiver(this.connectivityReceiver, 
 			new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
-		)
-		this.registerReceiver(this.polipoCrashReceiver, 
-			new IntentFilter("com.polipoid.polipo_crash")
 		)
 	}
 
 	def void stopProxy() {
 		if (!this.running) return;
-		this.proxyManager.stop()
+		this.proxyManager.stopProxy()
 		this.stopForeground(true)
 		this.unregisterReceiver(this.connectivityReceiver)
-		this.unregisterReceiver(this.polipoCrashReceiver)
+	}
+
+	/**
+	 * Verifies then installs the given stream as the user's preferred polipo configuration.
+	 * Will close the InputStream once it's done.
+	 *
+	 * @throws IllegalArgumentException If the config isn't valid.
+	 */
+	def void installUserConfig(InputStream userConfStream) {
+		this.proxyManager.installUserConfig(userConfStream)
+		this.proxyManager.reloadSettings()
+	}
+
+	/**
+	 * Enable or disable the users custom configuration
+	 */
+	def void enableUserConfig(boolean enableConfig) {
+		this.proxyManager.enableUserConfig(enableConfig)
+		this.proxyManager.reloadSettings()
+	}
+
+	/**
+	 * Return whether the user has a custom configuration enabled
+	 */
+	def UserConfigState getUserConfigurationState() {
+		this.proxyManager.userConfigurationState
 	}
 
 	def private buildNotification() {
@@ -97,7 +135,7 @@ class ProxyWrapperService extends Service {
 		// If I use only >= MODERATE, then I get things like MEMORY_UI_HIDDEN, which isn't what I want
 		if (level >= ComponentCallbacks2.TRIM_MEMORY_RUNNING_MODERATE 
 			&& level <= ComponentCallbacks2.TRIM_MEMORY_RUNNING_CRITICAL) {
-			this.proxyManager.reduceMemoryUsage()
+			this.proxyManager.reduceProxyMemoryUsage()
 		}
 	}
 }

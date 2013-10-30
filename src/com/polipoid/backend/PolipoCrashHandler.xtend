@@ -2,7 +2,6 @@ package com.polipoid.backend
 
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -10,14 +9,15 @@ import android.net.Uri
 import android.support.v4.app.NotificationCompat
 import com.polipoid.R
 import java.util.ArrayList
-import java.util.List
-import java.util.Date
 import java.util.Calendar
+import java.util.Date
+import java.util.List
 
 /**
  * Monitors how often polipo is crashing, and shuts down the service with a notification if it's getting out of hand
+ * TODO: This could disable the users configuration if it has been found to crash polipo.
  */
-class PolipoCrashReceiver extends BroadcastReceiver {
+class PolipoCrashHandler {
 	var ProxyWrapperService service = null
 	val private serviceCrashedNotificationId = 936587432
 
@@ -30,14 +30,14 @@ class PolipoCrashReceiver extends BroadcastReceiver {
 		this.service = service
 	}
 	
-	def override onReceive(Context context, Intent intent) {
+	def handleCrash() {
 		this.polipoCrashes.add(new Date)
 		if (this.polipoCrashes.size > 4) {
 			val earliestCrash = this.polipoCrashes.remove(0)
 			val fiveMinutesAgoCal = Calendar.instance
 			fiveMinutesAgoCal.add(Calendar.MINUTE, -5)
 			if (earliestCrash.after(fiveMinutesAgoCal.time)) {
-				this.showCrashNotification(context)
+				this.showCrashNotification(this.service)
 				this.service.stopProxy()
 			}
 		}

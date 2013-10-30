@@ -75,6 +75,10 @@ class MainActivity extends Activity {
 				this.startActivity(new Intent(this, HelpActivity))
 				true
 			}
+			case R.id.action_settings: {
+				this.startActivity(new Intent(this, SettingsActivity))
+				true
+			}
 			default:
 				false
 		}

@@ -48,6 +48,12 @@
             android:parentActivityName="com.polipoid.ui.MainActivity"
             android:label="@string/title_activity_help" >
         </activity>
+
+        <activity
+            android:name="com.polipoid.ui.SettingsActivity"
+            android:parentActivityName="com.polipoid.ui.MainActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>

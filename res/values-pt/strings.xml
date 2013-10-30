@@ -7,15 +7,22 @@
     <string name="lbl_start_header">Iniciar ou parar o proxy</string>
     <string name="start_proxy">Iniciar proxy</string>
     <string name="stop_proxy">Parar proxy</string>
-    <string name="proxy_explanation">Iniciar ou parar o proxy (que utiliza o puerto 8123)</string>
+    <string name="proxy_explanation">Iniciar ou parar o proxy (que utiliza o puerto 8123 por padrão)</string>
     <string name="lbl_wrapper_settings">Configuração básica</string>
     <string name="chk_autostart">Iniciar com Android</string>
     <string name="notification_title">Polipoid funcionando</string>
     <string name="notification_message">Tocar para configurar o proxy</string>
     <string name="title_activity_help">Ajuda</string>
+    <string name="title_activity_settings">Configuração</string>
     <string name="help_text">Polipoid é um invólucro para o proxy \'polipo\'. Proviene um icono de notificação e também mudar-se ao \'offline mode\' quando a rede é desconectado.\n\nPara ler mais informações sobre polipo:\n http://www.pps.univ-paris-diderot.fr/~jch/software/polipo \n\nO método de configuração de a sistema para usar o proxy depiende en o versão de Android. Buscar una solução em Google.</string>
     <string name="flattr_button_description">Apoiar Polipoid em Flattr</string>
     <string name="polipo_crash_title">Polipoid instável</string>
     <string name="polipo_crash_desc">Por favor crie um relatório de error</string>
+    <string name="upload_conf_button">Selecione o arquivo</string>
+    <string name="upload_conf_description">Com esta tela, você pode fazer upload de um arquivo de configuração para polipo. Olhe o manual para ver as opções.\nhttp://www.pps.univ-paris-diderot.fr/~jch/software/polipo/polipo.html#Variable-index</string>
+    <string name="conf_stream_invalid">Não foi possível encontrar o arquivo, por favor, tente novamente.</string>
+    <string name="enable_user_config">Permitir configuração personalizada</string>
+    <string name="no_file_selector_found">Você precisa ter um aplicativo de seleção de arquivos (por exemplo, Android File Explorer) para usar este recurso.</string>
+    <string name="user_config_updated">Configuração polipo atualizada</string>
 
 </resources>
