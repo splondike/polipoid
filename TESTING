@@ -1,0 +1,6 @@
+Manual regression test
+======================
+On Android v2.2 and latest, check the following:
+* Start/stop polipo, check that the binary starts (using ps).
+* Check the start on boot toggle works.
+* Check the crash handler by killing the polipo wrapper/binary using the shell's kill command.
