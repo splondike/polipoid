@@ -14,6 +14,9 @@ import com.polipoid.ui.MainActivity
 import java.io.InputStream
 import com.polipoid.backend.proxy.UserConfigState
 import com.polipoid.backend.proxy.StopReason
+import android.net.wifi.WifiManager
+import android.os.PowerManager
+import android.content.Context
 
 /**
  * Wraps the Polipo binary and provides an interface for interacting with it (start/stop, change configuration).
@@ -25,6 +28,8 @@ class ProxyWrapperService extends Service {
 	var private ProxyManager proxyManager = null
 	var private ConnectivityReceiver connectivityReceiver = null
 	var private PolipoCrashHandler polipoCrashReceiver = null
+	var private WifiManager.WifiLock wifiLock = null
+	var private PowerManager.WakeLock wakeLock = null
 
 	def override void onCreate() {
 		// These need to be instantiated here because ProxyManager makes use of Context in its constructor
@@ -37,6 +42,10 @@ class ProxyWrapperService extends Service {
 				this.polipoCrashReceiver.handleCrash()
 			}
 		]
+		val wifiManager = getSystemService(Context.WIFI_SERVICE) as WifiManager
+		this.wifiLock = wifiManager.createWifiLock("proxy")
+		val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+		this.wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "proxy")
 	}
 
 	def boolean isRunning() {
@@ -50,6 +59,8 @@ class ProxyWrapperService extends Service {
 		this.registerReceiver(this.connectivityReceiver, 
 			new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
 		)
+		this.wifiLock.acquire()
+		this.wakeLock.acquire()
 	}
 
 	def void stopProxy() {
@@ -57,6 +68,8 @@ class ProxyWrapperService extends Service {
 		this.proxyManager.stopProxy()
 		this.stopForeground(true)
 		this.unregisterReceiver(this.connectivityReceiver)
+		this.wifiLock.release()
+		this.wakeLock.release()
 	}
 
 	/**
