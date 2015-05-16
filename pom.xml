@@ -10,9 +10,9 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <android.plugin.version>3.6.1</android.plugin.version>
-    <xtend.version>2.4.3</xtend.version>
-    <platform.version>4.3</platform.version>
+    <android.plugin.version>4.2.1</android.plugin.version>
+    <xtend.version>2.8.0</xtend.version>
+    <platform.version>19</platform.version>
   </properties>
 
   <repositories>
@@ -62,15 +62,13 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+        <groupId>com.simpligility.maven.plugins</groupId>
+
         <artifactId>android-maven-plugin</artifactId>
-        <extensions>true</extensions>
         <configuration>
-          <genDirectory>target/generated-sources/</genDirectory>
           <sdk>
-            <platform>${platform.version}</platform>
+             <platform>${platform.version}</platform>
           </sdk>
-          <undeployBeforeDeploy>true</undeployBeforeDeploy>
         </configuration>
       </plugin>
     </plugins>
@@ -78,7 +76,8 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+          <groupId>com.simpligility.maven.plugins</groupId>
+
           <artifactId>android-maven-plugin</artifactId>
           <version>${android.plugin.version}</version>
           <extensions>true</extensions>
