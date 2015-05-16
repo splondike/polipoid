@@ -1,6 +1,7 @@
 package com.polipoid.backend.proxy
 
 import android.content.Context
+import android.os.Build
 import com.google.common.io.ByteStreams
 import com.google.common.io.Files
 import java.io.BufferedReader
@@ -234,7 +235,12 @@ package class Installation {
 	}
 
 	def getPolipoBinary() {
-		new File(this.polipoDir, "polipo")
+		if (Build.VERSION.SDK_INT >= 16) {
+			// Platform independent executable version, required by > v5.0
+			new File(this.polipoDir, "polipo-pie")
+		} else {
+			new File(this.polipoDir, "polipo")
+		}
 	}
 
 	def getPolipoWrapper() {

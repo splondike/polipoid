@@ -13,21 +13,26 @@ Build Polipo binary
 
 We need a copy of the Polipo binary which will run on the machine you're building for. Once it's built just put it in the root of the assets/ directory. The following steps should take you through the process. See `$NDK/docs/STANDALONE-TOOLCHAIN.html` for more info.
 
-1. Run the following to set up your toolchain, $NDK is the root of your NDK installation:
+1. We need two versions of the toolchain for older and newer Android versions. Run the following to set up your toolchains, $NDK is the root of your NDK installation:
 
-    mkdir /tmp/toolchain
-    $NDK/build/tools/make-standalone-toolchain.sh --platform=android-8 --install-dir=/tmp/toolchain
+    mkdir /tmp/toolchain-8
+    mkdir /tmp/toolchain-16
+    $NDK/build/tools/make-standalone-toolchain.sh --platform=android-8 --arch=arm --install-dir=/tmp/toolchain-8
+    $NDK/build/tools/make-standalone-toolchain.sh --platform=android-16 --arch=arm --install-dir=/tmp/toolchain-16
 
-This will set up an ARM toolchain in /tmp/toolchain. If you're building for a different architecture, just add `--arch=x86` or whatever's appropriate.
+This will set up ARM toolchains in /tmp/toolchain-8 and /tmp/toolchain-16. If you're building for a different architecture, just use `--arch=x86` or whatever's appropriate.
 2. Go to the `polipo/` direcory in the polipoid source and run the following:
 
-    export PATH=/tmp/toolchain/bin:$PATH
-    export CC=arm-linux-androideabi-gcc #or i686-linux-android-gcc if you're building x86
-    EXTRA_DEFINES="-U __linux__" make polipo
+    make clean
+    # Replace arm-linux-androideabi with i686-linux-android-gcc if you're building x86 
+    PATH=/tmp/toolchain-8/bin:$PATH CC=arm-linux-androideabi-gcc EXTRA_DEFINES="-U __linux__" make polipo
+    cp polipo ../src/main/assets/polipo
 
-If you get an error like "sysinfo not defined" when running make, you may have to edit the Polipo source (particularly util.c) to not use the sysinfo call. This is a bug in android versions 8 and below (fixed in v9). The EXTRA_DEFINES variable should hopefully take care of this though.
+    make clean
+    PATH=/tmp/toolchain-16/bin:$PATH CC=arm-linux-androideabi-gcc EXTRA_DEFINES="-fPIE -U __linux__" LDFLAGS="-fPIE -pie" make polipo
+    cp polipo ../src/main/assets/polipo-pie
 
-3. Now copy the polipo binary to the assets folder using `cp polipo ../assets/`
+If you get an error like "sysinfo not defined" when running make, you may have to edit the Polipo source (particularly util.c) to not use the sysinfo call. This is a bug in android versions 8 and below (fixed in v9). The EXTRA_DEFINES __linux__ thing should hopefully take care of this though.
 
 Setup Maven
 -----------

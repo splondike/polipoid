@@ -1,4 +1,5 @@
 gen/
 bin/
-assets/polipo
+src/main/assets/polipo
+src/main/assets/polipo-pie
 target/
