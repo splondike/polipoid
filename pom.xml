@@ -10,9 +10,9 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <android.plugin.version>4.2.1</android.plugin.version>
-    <xtend.version>2.8.0</xtend.version>
-    <platform.version>19</platform.version>
+    <android.plugin.version>4.3.0</android.plugin.version>
+    <xtend.version>2.9.0</xtend.version>
+    <platform.version>23</platform.version>
   </properties>
 
   <repositories>
