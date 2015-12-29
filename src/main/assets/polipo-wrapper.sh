@@ -7,7 +7,7 @@
 # 2. Get the pid of the binary (without java reflection hacks). The pid is output
 #    as the first line of stdout.
 #
-# Note: When editing be careful about what shell utilities you use, android doesn't
+# Note: When editing be careful about what shell utilities you use, android 2.2 doesn't
 #       come with very many (no busybox by default remember!). Check on the emulator.
 
 script_pid=$$

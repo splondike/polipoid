@@ -105,7 +105,7 @@ package class Installation {
 		checkInstallation()
 		// -v works at the moment to make polipo exit while printing the config errors.
 		// this will need to be checked on binary upgrades.
-		val args = #[this.polipoWrapper.absolutePath, this.polipoBinary.absolutePath, "-c", config.absolutePath, "-v"]
+		val args = #[this.polipoWrapper.absolutePath, this.wrapperExecutableArgument, "-c", config.absolutePath, "-v"]
 		val process = new ProcessBuilder(args)
 			.directory(this.polipoDir) // So the wrapper script will know where the binary is
 			.start()
@@ -165,8 +165,10 @@ package class Installation {
 
 	def private installBinary() {
 		val polipo = installFile(this.polipoBinary.name)
+		val runPie = installFile(this.runPieBinary.name)
 		val polipoWrapper = installFile(this.polipoWrapper.name)
 		new ProcessBuilder("chmod", "700", polipo.absolutePath).start().waitFor
+		new ProcessBuilder("chmod", "700", runPie.absolutePath).start().waitFor
 		new ProcessBuilder("chmod", "700", polipoWrapper.absolutePath).start().waitFor
 	}
 
@@ -235,16 +237,23 @@ package class Installation {
 	}
 
 	def getPolipoBinary() {
-		if (Build.VERSION.SDK_INT >= 16) {
-			// Platform independent executable version, required by > v5.0
-			new File(this.polipoDir, "polipo-pie")
-		} else {
-			new File(this.polipoDir, "polipo")
-		}
+		new File(this.polipoDir, "polipo")
+	}
+
+	def getRunPieBinary() {
+		new File(this.polipoDir, "run_pie")
 	}
 
 	def getPolipoWrapper() {
 		new File(this.polipoDir, "polipo-wrapper.sh")
+	}
+
+	def getWrapperExecutableArgument() {
+		if (Build.VERSION.SDK_INT >= 16) {
+			this.polipoBinary.absolutePath
+		} else {
+			this.runPieBinary.absolutePath + " " + this.polipoBinary.absolutePath
+		}
 	}
 
 	def getCacheDir() {

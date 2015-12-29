@@ -13,26 +13,23 @@ Build Polipo binary
 
 We need a copy of the Polipo binary which will run on the machine you're building for. Once it's built just put it in the root of the assets/ directory. The following steps should take you through the process. See `$NDK/docs/STANDALONE-TOOLCHAIN.html` for more info.
 
-1. We need two versions of the toolchain for older and newer Android versions. Run the following to set up your toolchains, $NDK is the root of your NDK installation:
+1. Run the following to set up your toolchains, $NDK is the root of your NDK installation:
 
     mkdir /tmp/toolchain-8
-    mkdir /tmp/toolchain-16
     $NDK/build/tools/make-standalone-toolchain.sh --platform=android-8 --arch=arm --install-dir=/tmp/toolchain-8
-    $NDK/build/tools/make-standalone-toolchain.sh --platform=android-16 --arch=arm --install-dir=/tmp/toolchain-16
 
-This will set up ARM toolchains in /tmp/toolchain-8 and /tmp/toolchain-16. If you're building for a different architecture, just use `--arch=x86` or whatever's appropriate.
+This will set an ARM toolchains in /tmp/toolchain-8. If you're building for a different architecture, just use `--arch=x86` or whatever's appropriate.
 2. Go to the `polipo/` direcory in the polipoid source and run the following:
 
     make clean
     # Replace arm-linux-androideabi with i686-linux-android-gcc if you're building x86 
-    PATH=/tmp/toolchain-8/bin:$PATH CC=arm-linux-androideabi-gcc EXTRA_DEFINES="-U __linux__" make polipo
+    PATH=/tmp/toolchain-8/bin:$PATH CC=arm-linux-androideabi-gcc EXTRA_DEFINES="-fvisibility=default -fPIE -U __linux__" LDFLAGS="-rdynamic -fPIE -pie" make polipo
     cp polipo ../src/main/assets/polipo
 
-    make clean
-    PATH=/tmp/toolchain-16/bin:$PATH CC=arm-linux-androideabi-gcc EXTRA_DEFINES="-fPIE -U __linux__" LDFLAGS="-fPIE -pie" make polipo
-    cp polipo ../src/main/assets/polipo-pie
+3. Finally to allow the application to run on an Android version earlier than 5.0.0 you will also need to build the 'run_pie' executable. Go to the `src/main/run-pie` directory and run the following:
 
-If you get an error like "sysinfo not defined" when running make, you may have to edit the Polipo source (particularly util.c) to not use the sysinfo call. This is a bug in android versions 8 and below (fixed in v9). The EXTRA_DEFINES __linux__ thing should hopefully take care of this though.
+   /tmp/toolchain-8/bin/arm-linux-androideabi-gcc -o run_pie run_pie.c
+   cp run_pie ../assets/run_pie
 
 Setup Maven
 -----------
@@ -50,16 +47,16 @@ To deploy this APK to your android device or emulator you can run `mvn android:d
 Developing
 ==========
 
-I use Eclipse to develop the application, and you can too, once you've got Building working. After you've done the following steps you can import the code and act like it's a normal Android project.
+Initial setup
+-------------
 
-Setup Xtend plugin for Eclipse
-------------------------------
+I use Eclipse to develop the application, and you can too, once you've got Building working. After you've done the following steps you can import the code and act like it's a normal Android project. You will need to perform the following steps:
 
-Xtend is described as a modernized Java. It gets rid of a lot of the boilerplate code without adding a big runtime dependency (like Scala for example).
+1. Install the Eclipse Marketplace Client: https://www.eclipse.org/mpc/
+2. Install the Andmore Android tools: Search for 'Andmore' in the Eclipse Marketplace (Help -> Eclipse Marketplace).
+3. Install the Eclipse Xtend IDE plugin from their site (Marketplace one doesn't work at time of writing): https://www.eclipse.org/xtend/download.html
 
-Install it by following the instructions on this page http://www.eclipse.org/xtend/download.html. The .xtend files live in src/, and generated .java lives in gen/. To follow stack traces you will need to look at the generated files. Also breakpoints only seem to work when set on the .java (as of writing).
+Debugging
+---------
 
-Setup m2e-android plugin for Eclipse
-------------------------------
-
-This plugin is needed so that Eclipse knows about the maven included dependencies. You need the Eclipse marketplace plugin to install it. Then just search for android m2e and install. See http://rgladwell.github.io/m2e-android/
+The project is written in Xtend, which gets compiled to .java files before The .xtend files live in src/, and generated .java lives in gen/. To follow stack traces you will need to look at the generated files. Also breakpoints only seem to work when set on the .java (as of writing).

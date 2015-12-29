@@ -103,7 +103,7 @@ class ProxyManager {
 	 */
 	def private Process startPolipo(boolean offlineMode) {
 		val polipoWrapper = this.installation.polipoWrapper.absolutePath
-		val polipoBinary = this.installation.polipoBinary.absolutePath
+		val wrapperExecutableArgument = this.installation.wrapperExecutableArgument
 		val configFile = this.installation.configFile.absolutePath
 		val logFile = this.installation.logFile.absolutePath
 		val cacheDir = this.installation.cacheDir.absolutePath
@@ -113,7 +113,7 @@ class ProxyManager {
 		val disableWebServer = "localDocumentRoot="
 		val proxyOffline = "proxyOffline=" + offlineMode.toString
 
-		val args = #[polipoWrapper, polipoBinary, "-c", configFile, disableWebServer,
+		val args = #[polipoWrapper, wrapperExecutableArgument, "-c", configFile, disableWebServer,
 					 disableConfiguration, noSyslog, proxyOffline, "diskCacheRoot="+cacheDir,
 					 "logFile="+logFile]
 		new ProcessBuilder(args)
