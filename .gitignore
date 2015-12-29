@@ -1,5 +1,7 @@
 gen/
 bin/
-src/main/assets/polipo
-src/main/assets/polipo-pie
+src/main/assets/polipo-arm
+src/main/assets/polipo-x86
+src/main/assets/run_pie-arm
+src/main/assets/run_pie-x86
 target/
