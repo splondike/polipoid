@@ -59,8 +59,11 @@ Initial setup
 I use Eclipse to develop the application, and you can too, once you've got Building working. After you've done the following steps you can import the code and act like it's a normal Android project. You will need to perform the following steps:
 
 1. Install the Eclipse Marketplace Client: https://www.eclipse.org/mpc/
-2. Install the Andmore Android tools: Search for 'Andmore' in the Eclipse Marketplace (Help -> Eclipse Marketplace).
-3. Install the Eclipse Xtend IDE plugin from their site (Marketplace one doesn't work at time of writing): https://www.eclipse.org/xtend/download.html
+2. Install the Android Development Tools: Search for 'Android Development' in the Eclipse Marketplace (Help -> Eclipse Marketplace).
+3. Install the Android for Maven Eclipse plugin: Search for 'android m2e' in the Eclipse Marketplace (Help -> Eclipse Marketplace).
+4. Install the Eclipse Xtend plugin : Search for 'Eclipse Xtend' in the Eclipse Marketplace (Help -> Eclipse Marketplace).
+
+If the Xtend support doesn't work, you might need to download the Eclipse pre-packaged with Xtend off the Xtend website, then install Andmore on top of that.
 
 Debugging
 ---------
