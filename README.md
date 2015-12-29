@@ -15,21 +15,27 @@ We need a copy of the Polipo binary which will run on the machine you're buildin
 
 1. Run the following to set up your toolchains, $NDK is the root of your NDK installation:
 
-    mkdir /tmp/toolchain-8
-    $NDK/build/tools/make-standalone-toolchain.sh --platform=android-8 --arch=arm --install-dir=/tmp/toolchain-8
+    mkdir /tmp/toolchain-9-arm
+    mkdir /tmp/toolchain-9-x86
+    $NDK/build/tools/make-standalone-toolchain.sh --platform=android-9 --arch=arm --install-dir=/tmp/toolchain-9-arm
+    $NDK/build/tools/make-standalone-toolchain.sh --platform=android-9 --arch=x86 --install-dir=/tmp/toolchain-9-x86
 
-This will set an ARM toolchains in /tmp/toolchain-8. If you're building for a different architecture, just use `--arch=x86` or whatever's appropriate.
 2. Go to the `polipo/` direcory in the polipoid source and run the following:
 
     make clean
-    # Replace arm-linux-androideabi with i686-linux-android-gcc if you're building x86 
-    PATH=/tmp/toolchain-8/bin:$PATH CC=arm-linux-androideabi-gcc EXTRA_DEFINES="-fvisibility=default -fPIE -U __linux__" LDFLAGS="-rdynamic -fPIE -pie" make polipo
-    cp polipo ../src/main/assets/polipo
+    PATH=/tmp/toolchain-9-arm/bin:$PATH CC=arm-linux-androideabi-gcc EXTRA_DEFINES="-fvisibility=default -fPIE -U __linux__" LDFLAGS="-rdynamic -fPIE -pie" make polipo
+    cp polipo ../src/main/assets/polipo-arm
 
-3. Finally to allow the application to run on an Android version earlier than 5.0.0 you will also need to build the 'run_pie' executable. Go to the `src/main/run-pie` directory and run the following:
+    make clean
+    PATH=/tmp/toolchain-9-x86/bin:$PATH CC=i686-linux-android-gcc EXTRA_DEFINES="-fvisibility=default -fPIE -U __linux__" LDFLAGS="-rdynamic -fPIE -pie" make polipo
+    cp polipo ../src/main/assets/polipo-x86
 
-   /tmp/toolchain-8/bin/arm-linux-androideabi-gcc -o run_pie run_pie.c
-   cp run_pie ../assets/run_pie
+3. Finally to allow the application to run on an Android version earlier than 5.0.0 you will also need to build the 'run_pie' executables for both Arm and x86 CPU architectures. Go to the `src/main/run-pie` directory and run the following:
+
+   /tmp/toolchain-9-arm/bin/arm-linux-androideabi-gcc -o run_pie-arm run_pie.c
+   /tmp/toolchain-9-x86/bin/i686-linux-android-gcc -o run_pie-x86 run_pie.c
+   cp run_pie-arm ../assets/run_pie-arm
+   cp run_pie-x86 ../assets/run_pie-x86
 
 Setup Maven
 -----------

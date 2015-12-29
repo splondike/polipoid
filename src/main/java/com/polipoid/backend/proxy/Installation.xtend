@@ -237,11 +237,29 @@ package class Installation {
 	}
 
 	def getPolipoBinary() {
-		new File(this.polipoDir, "polipo")
+		switch (this.cpuArch) {
+			case "arm": new File(this.polipoDir, "polipo-arm")
+			case "x86": new File(this.polipoDir, "polipo-x86")
+			default: throw new RuntimeException("Unhandled CPU architecture")
+		}
 	}
 
 	def getRunPieBinary() {
-		new File(this.polipoDir, "run_pie")
+		switch (this.cpuArch) {
+			case "arm": new File(this.polipoDir, "run_pie-arm")
+			case "x86": new File(this.polipoDir, "run_pie-x86")
+			default: throw new RuntimeException("Unhandled CPU architecture")
+		}
+	}
+
+	def private getCpuArch() {
+		if (Build.CPU_ABI.startsWith("armeabi")) {
+			"arm"
+		} else if (Build.CPU_ABI.startsWith("x86")) {
+			"x86"
+		} else {
+			"unknown"
+		}
 	}
 
 	def getPolipoWrapper() {
@@ -252,6 +270,8 @@ package class Installation {
 		if (Build.VERSION.SDK_INT >= 16) {
 			this.polipoBinary.absolutePath
 		} else {
+			// This binary can run PIE applications under non-PIE OS
+			// see http://stackoverflow.com/a/27693572
 			this.runPieBinary.absolutePath + " " + this.polipoBinary.absolutePath
 		}
 	}
