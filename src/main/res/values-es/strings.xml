@@ -15,7 +15,9 @@
     <string name="title_activity_help">Ayuda</string>
     <string name="title_activity_settings">Configuración</string>
     <string name="help_text">Polipoid es una envoltura por el proxy \'polipo\'. El proviene una icono de notificación y también se configura a \'offline mode\' cuando la red se desconecta.\n\nPor mas información sobre polipo:\n http://www.pps.univ-paris-diderot.fr/~jch/software/polipo \n\nEl metodo de configuración de la sistema para usar el proxy depiende en el versión de Android. Usa Google para buscar una solución.</string>
+    <string name="flattr_url">https://flattr.com/submit/auto?user_id=splondike&amp;url=http://github.com/splondike/polipoid/&amp;title=Polipoid&amp;description=Android%20wrapper%20for%20the%20Polipo%20proxy&amp;language=en_GB&amp;tags=android,proxy&amp;category=software</string>
     <string name="flattr_button_description">Apoyar Polipoid en Flattr</string>
+    <string name="bug_report_url">http://github.com/splondike/polipoid/issues</string>
     <string name="polipo_crash_title">Polipoid inestable</string>
     <string name="polipo_crash_desc">Por favor cree un informe de error</string>
     <string name="upload_conf_button">Elige el archivo</string>
