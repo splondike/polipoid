@@ -12,7 +12,6 @@ import com.polipoid.R
 import com.polipoid.backend.proxy.ProxyManager
 import com.polipoid.ui.MainActivity
 import java.io.InputStream
-import com.polipoid.backend.proxy.UserConfigState
 import com.polipoid.backend.proxy.StopReason
 
 /**
@@ -71,18 +70,17 @@ class ProxyWrapperService extends Service {
 	}
 
 	/**
-	 * Enable or disable the users custom configuration
+	 * @return The currently installed Polipo configuration (whether user or Default).
 	 */
-	def void enableUserConfig(boolean enableConfig) {
-		this.proxyManager.enableUserConfig(enableConfig)
-		this.proxyManager.reloadSettings()
+	def InputStream getConfig() {
+		this.proxyManager.getConfig()
 	}
 
 	/**
-	 * Return whether the user has a custom configuration enabled
+	 * Removes any user configuration, restoring the defaults.
 	 */
-	def UserConfigState getUserConfigurationState() {
-		this.proxyManager.userConfigurationState
+	def void resetToDefaultConfig() {
+		this.proxyManager.resetToDefaultConfig()
 	}
 
 	def private buildNotification() {

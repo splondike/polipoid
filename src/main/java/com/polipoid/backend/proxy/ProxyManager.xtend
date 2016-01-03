@@ -3,6 +3,8 @@ package com.polipoid.backend.proxy
 import android.content.Context
 import android.net.ConnectivityManager
 import java.io.InputStream
+import java.io.FileInputStream
+import java.io.BufferedInputStream
 
 /**
  * Responsible for managing the polipo file system, and an associated process.
@@ -70,27 +72,19 @@ class ProxyManager {
 		}
 	}
 
+	def void resetToDefaultConfig() {
+		this.installation.resetToDefaultConfig()
+		this.reloadSettings()
+	}
+
 	def void installUserConfig(InputStream stream) {
 		this.installation.installUserConfig(stream)
 	}
 
-	/**
-	 * Enable or disable the users custom configuration
-	 */
-	def void enableUserConfig(boolean enableConfig) {
-		this.installation.enableUserConfig(enableConfig)
+	def InputStream getConfig() {
+		this.installation.getConfigContent()
 	}
 
-	/**
-	 * Return whether the user has a custom configuration enabled
-	 */
-	def UserConfigState getUserConfigurationState() {
-		this.installation.userConfigurationState
-	}
-
-	/**
-	 * 
-	 */
 	def void setStopListener((StopReason)=>void stopListener) {
 		this.stopListener = stopListener
 	}
@@ -108,13 +102,9 @@ class ProxyManager {
 		val logFile = this.installation.logFile.absolutePath
 		val cacheDir = this.installation.cacheDir.absolutePath
 
-		val noSyslog = "logSyslog=false"
-		val disableConfiguration = "disableLocalInterface=true"
-		val disableWebServer = "localDocumentRoot="
 		val proxyOffline = "proxyOffline=" + offlineMode.toString
 
-		val args = #[polipoWrapper, wrapperExecutableArgument, "-c", configFile, disableWebServer,
-					 disableConfiguration, noSyslog, proxyOffline, "diskCacheRoot="+cacheDir,
+		val args = #[polipoWrapper, wrapperExecutableArgument, "-c", configFile, proxyOffline, "diskCacheRoot="+cacheDir,
 					 "logFile="+logFile]
 		new ProcessBuilder(args)
 			.start()

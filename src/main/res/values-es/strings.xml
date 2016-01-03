@@ -20,11 +20,7 @@
     <string name="bug_report_url">http://github.com/splondike/polipoid/issues</string>
     <string name="polipo_crash_title">Polipoid inestable</string>
     <string name="polipo_crash_desc">Por favor cree un informe de error</string>
-    <string name="upload_conf_button">Elige el archivo</string>
-    <string name="upload_conf_description">Con esta pantalla se puede subir una archivo configuración para polipo. Mira el manual para ver los opciónes.\nhttp://www.pps.univ-paris-diderot.fr/~jch/software/polipo/polipo.html#Variable-index</string>
     <string name="conf_stream_invalid">No puedo encontrar el archivo, por favor intente de nuevo.</string>
-    <string name="enable_user_config">Permitir configuración personalizada</string>
-    <string name="no_file_selector_found">Para usar este opción, se necessita tener una applicación a elegir archivos (por ejemplo "Android File Explorer").</string>
     <string name="user_config_updated">Configuración de Polipo actualizado</string>
 
 </resources>

@@ -13,6 +13,8 @@ import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.LinkedList
 import java.util.List
+import java.io.BufferedInputStream
+import java.io.FileInputStream
 
 /**
  * Manages the filesystem associated with the proxy.
@@ -38,42 +40,6 @@ package class Installation {
 		val rtn = new Installation(context)
 		rtn.checkInstallation()
 		rtn
-	}
-
-	/**
-	 * Enable or disable the users custom configuration
-	 */
-	def void enableUserConfig(boolean enableConfig) {
-		if (enableConfig && this.disabledUserConfig.exists) {
-			if (this.userConfig.exists) {
-				// This shouldn't happen, but this would be the sensible thing to do
-				this.disabledUserConfig.delete()
-			}
-			else {
-				Files.move(this.disabledUserConfig, this.userConfig)
-			}
-		}
-		else if (!enableConfig && this.userConfig.exists) {
-			Files.move(this.userConfig, this.disabledUserConfig)
-		}
-		else {
-			// We don't have the files, or they already match the boolean
-		}
-	}
-
-	/**
-	 * Return whether the user has a custom configuration enabled
-	 */
-	def UserConfigState getUserConfigurationState() {
-		if (this.userConfig.exists) {
-			UserConfigState.ENABLED
-		}
-		else if (this.disabledUserConfig.exists) {
-			UserConfigState.DISABLED
-		}
-		else {
-			UserConfigState.NONE
-		}
 	}
 
 	/**
@@ -125,16 +91,15 @@ package class Installation {
 	}
 
 	def private File configToTempFile(InputStream fileStream, Integer maxSize) {
-		val tempConfFile = File.createTempFile("polipo", "conf")
+		val tempConfFile = File.createTempFile("polipo", "conf", this.context.getCacheDir())
 		val os = new FileOutputStream(tempConfFile);
  
 		var totalRead = 0;
 		var read = 0;
-		// This is a somewhat inefficient way of doing it compared to a multiple byte buffer
-		// but Xtend doesn't support instantiating sized arrays
- 		while ((read = fileStream.read()) != -1) {
- 			os.write(read)
- 			totalRead = totalRead + 1
+		var byte[] buffer = newByteArrayOfSize(1)
+ 		while ((read = fileStream.read(buffer)) != -1) {
+ 			os.write(buffer)
+ 			totalRead = totalRead + read
  			if (totalRead > maxSize) {
  				fileStream.close()
  				tempConfFile.delete()
@@ -145,6 +110,19 @@ package class Installation {
  		fileStream.close()
  		os.close()
 		tempConfFile
+	}
+
+	/**
+	 * @return The content of the currently installed config file (whether user or default).
+	 */
+	def InputStream getConfigContent() {
+		new BufferedInputStream(new FileInputStream(this.configFile))
+	}
+
+	def void resetToDefaultConfig() {
+		if (this.userConfig.exists) {
+			this.userConfig.delete()
+		}
 	}
 
 	/**
@@ -226,10 +204,6 @@ package class Installation {
 
 	def getUserConfig() {
 		new File(this.polipoDir, "user.conf")
-	}
-
-	def getDisabledUserConfig() {
-		new File(this.polipoDir, "user.conf.disabled")
 	}
 
 	def getDefaultConfig() {

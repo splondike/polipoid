@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/update_settings" android:title="@string/update_settings" android:showAsAction="ifRoom" android:icon="@android:drawable/ic_menu_save"></item>
+    <item android:id="@+id/open_manual" android:title="@string/open_manual"></item>
+    <item android:id="@+id/reset_settings" android:title="@string/reset_settings"></item>
+</menu>
