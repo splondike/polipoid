@@ -43,6 +43,17 @@
             </intent-filter>
         </receiver>
 
+        <!-- Log file share -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.polipoid.logfileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+		      android:name="android.support.FILE_PROVIDER_PATHS"
+		      android:resource="@xml/sharable_paths" />
+        </provider>
+
         <activity
             android:name="com.polipoid.ui.HelpActivity"
             android:parentActivityName="com.polipoid.ui.MainActivity"

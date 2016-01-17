@@ -79,6 +79,16 @@ class MainActivity extends Activity {
 				this.startActivity(new Intent(this, SettingsActivity))
 				true
 			}
+			case R.id.action_show_log: {
+				this.backendConnection.withService[service|
+					val i = new Intent();
+					i.setAction(android.content.Intent.ACTION_VIEW);
+				    i.setDataAndType(service.readOnlyLogFileUri, "text/plain");
+				    i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+				    this.startActivity(i);
+			    ]
+				true
+			}
 			default:
 				false
 		}

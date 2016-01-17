@@ -13,6 +13,8 @@ import com.polipoid.backend.proxy.ProxyManager
 import com.polipoid.ui.MainActivity
 import java.io.InputStream
 import com.polipoid.backend.proxy.StopReason
+import android.net.Uri
+import android.support.v4.content.FileProvider
 
 /**
  * Wraps the Polipo binary and provides an interface for interacting with it (start/stop, change configuration).
@@ -74,6 +76,17 @@ class ProxyWrapperService extends Service {
 	 */
 	def InputStream getConfig() {
 		this.proxyManager.getConfig()
+	}
+
+	/**
+	 * @return A read-only URI to the Polipo log file.
+	 */
+	def Uri getReadOnlyLogFileUri() {
+		FileProvider.getUriForFile(
+			this.applicationContext,
+			"com.polipoid.logfileprovider",
+			this.proxyManager.getLogFile()
+		)
 	}
 
 	/**

@@ -2,9 +2,8 @@ package com.polipoid.backend.proxy
 
 import android.content.Context
 import android.net.ConnectivityManager
+import java.io.File
 import java.io.InputStream
-import java.io.FileInputStream
-import java.io.BufferedInputStream
 
 /**
  * Responsible for managing the polipo file system, and an associated process.
@@ -83,6 +82,10 @@ class ProxyManager {
 
 	def InputStream getConfig() {
 		this.installation.getConfigContent()
+	}
+
+	def File getLogFile() {
+		this.installation.getLogFile()
 	}
 
 	def void setStopListener((StopReason)=>void stopListener) {

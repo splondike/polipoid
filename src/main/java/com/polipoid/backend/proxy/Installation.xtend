@@ -4,8 +4,10 @@ import android.content.Context
 import android.os.Build
 import com.google.common.io.ByteStreams
 import com.google.common.io.Files
+import java.io.BufferedInputStream
 import java.io.BufferedReader
 import java.io.File
+import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.FileReader
 import java.io.FileWriter
@@ -13,8 +15,6 @@ import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.LinkedList
 import java.util.List
-import java.io.BufferedInputStream
-import java.io.FileInputStream
 
 /**
  * Manages the filesystem associated with the proxy.
