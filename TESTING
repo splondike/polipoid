@@ -1,15 +1,18 @@
 Manual regression test
 ======================
-On Android v2.2 and latest, check the following:
+On Android v2.3.3 and latest, check the following:
 * Start/stop polipo, check that the binary starts (using ps).
 * Check the start on boot toggle works.
 * Check the crash handler by killing the polipo wrapper/binary using the shell's kill command.
 * Try putting android into a low memory condition (using fill_mem), and check that polipo gets sent the reduce memory signal.
 * Toggle the wifi and check that polipo is swapped in and out of offline mode.
 
-* Check settings interface is disabled iff there's no file manager installed.
-* Select an over large file using settings interface, check the error message.
-* Select a non valid settings file, check the error message.
-* Check a valid settings file is uploaded.
-* Check doesn't crash when a file is not selected (i.e. file manager opened, then back pressed).
-* Check polipo uses user config if enabled (try toggle too). proxyName=changed, and http://localhost:8123/arst is a good test file.
+* Input a non valid settings file, check the error message.
+* Check a valid settings file can be saved.
+* Check you can reset the config, and open up the manual.
+* Check polipo uses saved confid. proxyName=changed, and http://localhost:8123/arst is a good test.
+
+* Try clearing the polipo cache and selecting 'show polipo log' from the main activity menu. You should see an appropriate dialog.
+* Start polipo and then show the log, you should be able to view it in a text viewer application (e.g. 'Text Edit' from Fdroid).
+
+* Check you can start polipo on both an Arm and an x86 device.
