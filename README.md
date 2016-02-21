@@ -69,3 +69,12 @@ Debugging
 ---------
 
 The project is written in Xtend, which gets compiled to .java files before The .xtend files live in src/, and generated .java lives in gen/. To follow stack traces you will need to look at the generated files. Also breakpoints only seem to work when set on the .java (as of writing).
+
+Releasing
+=========
+
+To release the project to the Fdroid repo do the following:
+
+1. Ensure the versionCode and versionName fields have been updated in AndroidManifest.xml.
+2. Git tag your revision.
+3. Update the metadata in https://gitlab.com/fdroid/fdroiddata/blob/master/metadata/com.polipoid.txt to contain the latest build instructions. Ensure the build version and number are included both in the new entry and in the "Current Version" field at the bottom.
