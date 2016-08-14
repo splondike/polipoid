@@ -15,13 +15,16 @@ We need a copy of the Polipo binary which will run on the machine you're buildin
 
 1. Run the following to set up your toolchains, $NDK is the root of your NDK installation:
 
+   ```bash
     mkdir /tmp/toolchain-9-arm
     mkdir /tmp/toolchain-9-x86
     $NDK/build/tools/make-standalone-toolchain.sh --platform=android-9 --arch=arm --install-dir=/tmp/toolchain-9-arm
     $NDK/build/tools/make-standalone-toolchain.sh --platform=android-9 --arch=x86 --install-dir=/tmp/toolchain-9-x86
+   ```
 
 2. Go to the `polipo/` direcory in the polipoid source and run the following:
 
+   ```bash
     make clean
     PATH=/tmp/toolchain-9-arm/bin:$PATH CC=arm-linux-androideabi-gcc EXTRA_DEFINES="-fvisibility=default -fPIE -U __linux__" LDFLAGS="-rdynamic -fPIE -pie" make polipo
     cp polipo ../src/main/assets/polipo-arm
@@ -29,13 +32,16 @@ We need a copy of the Polipo binary which will run on the machine you're buildin
     make clean
     PATH=/tmp/toolchain-9-x86/bin:$PATH CC=i686-linux-android-gcc EXTRA_DEFINES="-fvisibility=default -fPIE -U __linux__" LDFLAGS="-rdynamic -fPIE -pie" make polipo
     cp polipo ../src/main/assets/polipo-x86
+   ```
 
 3. Finally to allow the application to run on an Android version earlier than 5.0.0 you will also need to build the 'run_pie' executables for both Arm and x86 CPU architectures. Go to the `src/main/run-pie` directory and run the following:
 
+   ```bash
    /tmp/toolchain-9-arm/bin/arm-linux-androideabi-gcc -o run_pie-arm run_pie.c
    /tmp/toolchain-9-x86/bin/i686-linux-android-gcc -o run_pie-x86 run_pie.c
    cp run_pie-arm ../assets/run_pie-arm
    cp run_pie-x86 ../assets/run_pie-x86
+   ```
 
 Setup Maven
 -----------
@@ -63,12 +69,12 @@ I use Eclipse to develop the application, and you can too, once you've got Build
 3. Install the Android for Maven Eclipse plugin: Search for 'android m2e' in the Eclipse Marketplace (Help -> Eclipse Marketplace).
 4. Install the Eclipse Xtend plugin : Search for 'Eclipse Xtend' in the Eclipse Marketplace (Help -> Eclipse Marketplace).
 
-If the Xtend support doesn't work, you might need to download the Eclipse pre-packaged with Xtend off the Xtend website, then install Andmore on top of that.
+If the Xtend support doesn't work, you might need to download the Eclipse pre-packaged with Xtend off the Xtend website, then install the 'Andmore' plugin on top of that.
 
 Debugging
 ---------
 
-The project is written in Xtend, which gets compiled to .java files before The .xtend files live in src/, and generated .java lives in gen/. To follow stack traces you will need to look at the generated files. Also breakpoints only seem to work when set on the .java (as of writing).
+The project is written in Xtend, which gets converted to .java before in turn getting compiled to normal Java .class files. The .xtend files live in src/, and generated .java lives in gen/. To follow stack traces you will need to look at the generated files. Also breakpoints only seem to work when set on the .java (as of writing).
 
 Releasing
 =========
