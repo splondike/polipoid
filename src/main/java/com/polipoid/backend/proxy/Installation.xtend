@@ -214,7 +214,8 @@ package class Installation {
 		switch (this.cpuArch) {
 			case "arm": new File(this.polipoDir, "polipo-arm")
 			case "x86": new File(this.polipoDir, "polipo-x86")
-			default: throw new RuntimeException("Unhandled CPU architecture")
+			default:
+				throw new RuntimeException("Unhandled CPU architecture: " + this.cpuArch)
 		}
 	}
 
@@ -222,12 +223,15 @@ package class Installation {
 		switch (this.cpuArch) {
 			case "arm": new File(this.polipoDir, "run_pie-arm")
 			case "x86": new File(this.polipoDir, "run_pie-x86")
-			default: throw new RuntimeException("Unhandled CPU architecture")
+			default:
+				throw new RuntimeException("Unhandled CPU architecture: " + this.cpuArch)
 		}
 	}
 
 	def private getCpuArch() {
 		if (Build.CPU_ABI.startsWith("armeabi")) {
+			"arm"
+		} else if (Build.CPU_ABI.startsWith("arm64")) {
 			"arm"
 		} else if (Build.CPU_ABI.startsWith("x86")) {
 			"x86"
