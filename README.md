@@ -1,15 +1,19 @@
+Polipoid
+========
+
 Polipoid brings the Polipo HTTP proxy to Android. Polipo lets you do useful things such as cache web pages for offline access and should generally speed up browsing a little.
 
-Building
-========
+<a href="https://f-droid.org/packages/com.polipoid/" target="_blank">
+<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
+
+## Building
 
 Polipoid acts as a thin wrapper around the 'Polipo' HTTP proxy. The code is written in the Xtend programming language and is built using Maven. Consequently, to build it you will need in addition to the SDK:
 
   - The Android NDK (or a polipo binary which will run on the Android system you're targeting).
   - Maven installed and set up to use the Android Support Repository (see below).
 
-Build Polipo binary
--------------------
+## Build Polipo binary
 
 We need a copy of the Polipo binary which will run on the machine you're building for. Once it's built just put it in the root of the assets/ directory. The following steps should take you through the process. See `$NDK/docs/STANDALONE-TOOLCHAIN.html` for more info.
 
@@ -43,14 +47,14 @@ We need a copy of the Polipo binary which will run on the machine you're buildin
    cp run_pie-x86 ../assets/run_pie-x86
    ```
 
-Setup Maven
------------
+## Setup Maven
+
 In addition to installing Maven you will need to make sure the "Android Support Repository" is installed. You can do this by opening the "Android SDK Manager", expanding "Extras" and downloading "Android Support Repository". Now, assuming you've got your ANDROID_HOME environment variable set, you should be all set up.
 
 Another option is to run the https://github.com/mosabua/maven-android-sdk-deployer/ to install the artifacts to your ~/.m2/repository directory.
 
-Build APK
----------
+## Build APK
+
 Once you've done all the above, all you should have to do to build the APK is run `mvn package` to build `target/polipoid.apk`.
 
 To deploy this APK to your android device or emulator you can run `mvn android:deploy`. During development I tend to just use Eclipse for this though.
